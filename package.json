@@ -1,0 +1,19 @@
+{
+  "name": "anistalker_database_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CreationCollection/anistalker_database_api.git"
+  },
+  "author": "creationcollection",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CreationCollection/anistalker_database_api/issues"
+  },
+  "homepage": "https://github.com/CreationCollection/anistalker_database_api#readme"
+}
