@@ -1,7 +1,6 @@
 import { initializeApp, cert, deleteApp, App, ServiceAccount } from "firebase-admin/app";
 import { Database, getDatabase } from "firebase-admin/database";
-
-import * as serviceAccount from '../../serviceAccountKey.json';
+import path from "path";
 
 export class AniDatabase {
     private static app: App | null = null
@@ -10,7 +9,7 @@ export class AniDatabase {
 
     static init = () => {
         this.app = initializeApp({
-            credential: cert(serviceAccount as ServiceAccount),
+            credential: cert(path.resolve("scr/serviceAccountKey.json")),
             databaseURL: "https://redline-anistalker-default-rtdb.asia-southeast1.firebasedatabase.app/"
         })
         this.database = getDatabase(this.app)
