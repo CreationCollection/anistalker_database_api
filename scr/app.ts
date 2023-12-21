@@ -16,12 +16,12 @@ app.get('/', (req, res) => {
     res.send('Congratulations! You have reached the home page!')
 })
 
-app.use('mapping', mappingRouter)
-app.use('user', userRouter)
+app.use('/mapping', mappingRouter)
+app.use('/user', userRouter)
 
 app.listen(PORT, async () => {
-    console.log(`Server is running on port ${PORT}`)
     AniDatabase.init()
+    console.log(`Server is running on port ${PORT}`)
 })
 
 app.on('close', () => {
