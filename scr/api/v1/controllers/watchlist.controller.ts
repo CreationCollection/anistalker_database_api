@@ -56,15 +56,12 @@ export async function createWatchlist(req: Request, res: Response) {
         const title: string | null = req.body?.title
         const privacy: 'public' | 'shared' | 'private' | null = req.body?.privacy
         if (token && title && privacy) {
-            const userId = await AniUser.getUserId(token)
-            if (userId) {
-                const watchlist = await UserWatchlist.createWatchlist(userId, title, privacy)
-                const syncId = AniUser.createSyncReport(token, {
-                    action: "create",
-                    data: watchlist
-                })
-                return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
-            }
+            const watchlist = await UserWatchlist.createWatchlist(token, title, privacy)
+            const syncId = AniUser.createSyncReport(token, {
+                action: "create",
+                data: watchlist
+            })
+            return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
         }
         else {
             res.status(401).send("Unauthorized")
@@ -80,15 +77,12 @@ export async function updateWatchlist(req: Request, res: Response) {
         const title: string | null = req.body?.title
         const privacy: 'public' | 'shared' | 'private' | null = req.body?.privacy
         if (token && watchId && title && privacy) {
-            const userId = await AniUser.getUserId(token)
-            if (userId) {
-                const watchlist = await UserWatchlist.updateWatchlist(userId, watchId, title, privacy)
-                const syncId = AniUser.createSyncReport(token, {
-                    action: "update",
-                    data: watchlist
-                })
-                return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
-            }
+            const watchlist = await UserWatchlist.updateWatchlist(token, watchId, title, privacy)
+            const syncId = AniUser.createSyncReport(token, {
+                action: "update",
+                data: watchlist
+            })
+            return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
         }
         else {
             res.status(401).send("Unauthorized")
@@ -102,15 +96,12 @@ export async function deleteWatchlist(req: Request, res: Response) {
         const token: string | null = req.headers['authorization']?.slice(7) ?? null
         const watchId: number | null = req.body?.watchId
         if (token && watchId) {
-            const userId = await AniUser.getUserId(token)
-            if (userId) {
-                const watchlist = await UserWatchlist.removeWatchlist(userId, watchId)
-                const syncId = AniUser.createSyncReport(token, {
-                    action: "delete",
-                    data: watchlist
-                })
-                return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
-            }
+            const watchlist = await UserWatchlist.removeWatchlist(token, watchId)
+            const syncId = AniUser.createSyncReport(token, {
+                action: "delete",
+                data: watchlist
+            })
+            return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
         }
         else {
             res.status(401).send("Unauthorized")
@@ -124,15 +115,12 @@ export async function addWatchlist(req: Request, res: Response) {
         const token: string | null = req.headers['authorization']?.slice(7) ?? null
         const watchId: number | null = req.body?.watchId
         if (token && watchId) {
-            const userId = await AniUser.getUserId(token)
-            if (userId) {
-                const watchlist = await UserWatchlist.addWatchlist(userId, watchId)
-                const syncId = AniUser.createSyncReport(token, {
-                    action: "add",
-                    data: watchlist
-                })
-                return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
-            }
+            const watchlist = await UserWatchlist.addWatchlist(token, watchId)
+            const syncId = AniUser.createSyncReport(token, {
+                action: "add",
+                data: watchlist
+            })
+            return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
         }
         else {
             res.status(401).send("Unauthorized")
@@ -146,15 +134,12 @@ export async function removeWatchlist(req: Request, res: Response) {
         const token: string | null = req.headers['authorization']?.slice(7) ?? null
         const watchId: number | null = req.body?.watchId
         if (token && watchId) {
-            const userId = await AniUser.getUserId(token)
-            if (userId) {
-                const watchlist = await UserWatchlist.removeWatchlist(userId, watchId)
-                const syncId = AniUser.createSyncReport(token, {
-                    action: "remove",
-                    data: watchlist
-                })
-                return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
-            }
+            const watchlist = await UserWatchlist.removeWatchlist(token, watchId)
+            const syncId = AniUser.createSyncReport(token, {
+                action: "remove",
+                data: watchlist
+            })
+            return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
         }
         else {
             res.status(401).send("Unauthorized")
@@ -163,20 +148,17 @@ export async function removeWatchlist(req: Request, res: Response) {
 }
 
 // /user/watchlist/remove
-export async function recoverWatchlist (req: Request, res: Response) {
+export async function recoverWatchlist(req: Request, res: Response) {
     safeExecute(res, async () => {
         const token: string | null = req.headers['authorization']?.slice(7) ?? null
         const watchId: number | null = req.body?.watchId
         if (token && watchId) {
-            const userId = await AniUser.getUserId(token)
-            if (userId) {
-                const watchlist = await UserWatchlist.recoverWatchlist(userId, watchId)
-                const syncId = AniUser.createSyncReport(token, {
-                    action: "recover",
-                    data: watchlist
-                })
-                return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
-            }
+            const watchlist = await UserWatchlist.recoverWatchlist(token, watchId)
+            const syncId = AniUser.createSyncReport(token, {
+                action: "recover",
+                data: watchlist
+            })
+            return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
         }
         else {
             res.status(401).send("Unauthorized")
@@ -191,16 +173,13 @@ export async function addAnimeToWatchlist(req: Request, res: Response) {
         const watchId: number | null = req.body?.watchId
         const animeId: number | null = req.body?.animeId
         if (token && watchId && animeId) {
-            const userId = await AniUser.getUserId(token)
-            if (userId) {
-                const watchlist = await UserWatchlist.addAnimeToWatchlist(userId, watchId, animeId)
-                const syncId = AniUser.createSyncReport(token, {
-                    action: "append",
-                    animeId: animeId,
-                    data: watchlist
-                })
-                return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
-            }
+            const watchlist = await UserWatchlist.addAnimeToWatchlist(token, watchId, animeId)
+            const syncId = AniUser.createSyncReport(token, {
+                action: "append",
+                animeId: animeId,
+                data: watchlist
+            })
+            return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
         }
         else {
             res.status(401).send("Unauthorized")
@@ -215,16 +194,13 @@ export async function removeAnimeFromWatchlist(req: Request, res: Response) {
         const watchId: number | null = req.body?.watchId
         const animeId: number | null = req.body?.animeId
         if (token && watchId && animeId) {
-            const userId = await AniUser.getUserId(token)
-            if (userId) {
-                const watchlist = await UserWatchlist.removeAnimeFromWatchlist(userId, watchId, animeId)
-                const syncId = AniUser.createSyncReport(token, {
-                    action: "pop",
-                    animeId: animeId,
-                    data: watchlist
-                })
-                return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
-            }
+            const watchlist = await UserWatchlist.removeAnimeFromWatchlist(token, watchId, animeId)
+            const syncId = AniUser.createSyncReport(token, {
+                action: "pop",
+                animeId: animeId,
+                data: watchlist
+            })
+            return res.status(200).send({ status: 0, data: watchlist, syncReportId: syncId })
         }
         else {
             res.status(401).send("Unauthorized")
