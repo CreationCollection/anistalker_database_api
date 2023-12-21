@@ -33,7 +33,7 @@ export async function setZoroMapping(req: Request, res: Response) {
     safeExecute(res, async () => {
         const apiKey = req.headers['authorization']?.slice(7) ?? null
         const passKey = await AniDatabase.passKey()
-        if (apiKey == null || passKey) return res.sendStatus(401)
+        if (apiKey == null || passKey != apiKey) return res.sendStatus(401)
         
         const id = /[0-9]+$/.test(req.body.zoroId) ? parseInt(req.body.zoroId) : null
         const map = req.body?.map
