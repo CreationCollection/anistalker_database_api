@@ -52,11 +52,8 @@ export async function verifySyncReport (req: Request, res: Response) {
         const token = req.headers['authorization']?.slice(7)
         const id = req.body?.syncId
         if (token && id) {
-            const user = await AniUser.verifySyncReport(token, id)
-            if (user) {
-                res.json({ status: 200, data: user })
-                return
-            }
+            await AniUser.verifySyncReport(token, id)
+            return res.json({ status: 200, data: true })
         }
         res.json({ status: 400, error: ["Invalid token"] })
     })
