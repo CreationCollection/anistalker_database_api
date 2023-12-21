@@ -259,6 +259,15 @@ export class UserWatchlist {
         return this.getWatchlist(watchId)
     }
 
+    static getWatchlistByUser = async (userId: string): Promise<any> => {
+        const ref = AniDatabase.database!.ref(`users/${userId}/watchlist/active`)
+        return Object.keys((await ref.get()).val())
+    }
+
+    static getArchivedWatchlistByUser = async (userId: string): Promise<any> => {
+        const ref = AniDatabase.database!.ref(`users/${userId}/watchlist/archived`)
+        return Object.keys((await ref.get()).val())
+    }
 
     private static verifyAnimeId = async (animeId: number): Promise<boolean> => {
         try {

@@ -98,13 +98,56 @@ export class AniUser {
         ])
     }
 
+    
+
     // == User Action Syncing ==
 
-    // TODO Implement Syncing System
+    static createSyncReport = async (
+        token: string, 
+        data: any
+    ): Promise<string | null> => {
+        const userId = await AniUser.getUserId(token)
+        if (userId == null) return null
+        const ref = AniDatabase.database!.ref(`users/${userId}/syncReport`)
+        return (await ref.push(data)).key
+    }
+
+    static verifySyncReport = async (token: string, reportId: string): Promise<any> => {
+        const userId = await AniUser.getUserId(token)
+        if (userId == null) return null
+        AniDatabase.database!.ref(`users/${userId}/syncReport/${reportId}`).remove()
+        return true
+    }
+
+    static getSyncReports = async (token: string): Promise<any> => {
+        const userId = await AniUser.getUserId(token)
+        if (userId == null) return []
+        const ref = AniDatabase.database!.ref(`users/${userId}/syncReport`)
+        return (await ref.get()).val()
+    }
 
     // ========================
 
     // == User History Syncing ==
+
+    static setCurrentAnime = async (token: string, animeId: number) => {
+        const userId = await AniUser.getUserId(token)
+        if (userId == null) return
+        await AniDatabase.database!.ref(`users/${userId}/history/current`).set(animeId)
+    }
+
+    static getCurrentAnime = async (token: string): Promise<any> => {
+        const userId = await AniUser.getUserId(token)
+        if (userId == null) return
+        const ref = AniDatabase.database!.ref(`users/${userId}/history/current`)
+        return (await ref.get()).val()
+    }
+
+    static removeCurrentAnime = async (token: string) => {
+        const userId = await AniUser.getUserId(token)
+        if (userId == null) return
+        await AniDatabase.database!.ref(`users/${userId}/history/current`).remove()
+    }
 
     static addRecentAnime = async (token: string, animeId: number, ep: number, lang: 'sub' | 'dub'): Promise<any> => {
         const userId = await AniUser.getUserId(token)
@@ -148,6 +191,7 @@ export class AniUser {
         if (userId == null) return
         return (await AniDatabase.database!.ref(`users/${userId}/history/last/${animeId}`).get()).val()
     }
+
 
     // ========================
 }
