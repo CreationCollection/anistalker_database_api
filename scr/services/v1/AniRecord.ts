@@ -5,7 +5,7 @@ export class AniRecord {
 
     static mappingEntry = async (id: number, mapping: any) => {
         const ref = AniDatabase.database!.ref('record/mapping/' + id)
-        await ref.push(mapping)
+        await ref.set(mapping)
     }
 
     static getZoroMapping = async (id: number): Promise<any> => {
