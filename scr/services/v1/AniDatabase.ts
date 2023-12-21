@@ -6,6 +6,7 @@ import * as serviceAccount from '../../serviceAccountKey.json';
 export class AniDatabase {
     private static app: App | null = null
     static database: Database | null = null
+    private static apiKey: string | null = null
 
     static init = () => {
         this.app = initializeApp({
@@ -26,6 +27,9 @@ export class AniDatabase {
     }
 
     static passKey = async ():Promise<string> => {
-        return (await this.database!.ref('passKey').get()).val()
+        if (this.apiKey == null) {
+            this.apiKey = (await this.database!.ref('passKey').get()).val()
+        }
+        return this.apiKey!
     }
 }

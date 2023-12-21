@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import { AniRecord } from "../../../services/v1/AniRecord.js";
 import { safeExecute } from "../../utils.js";
+import { AniDatabase } from "../../../services/v1/AniDatabase.js";
 
 
 // /mapping/zoro/zoroId
@@ -30,6 +31,10 @@ export async function getAnilistMapping(req: Request, res: Response) {
 // /mapping/entry
 export async function setZoroMapping(req: Request, res: Response) {
     safeExecute(res, async () => {
+        const apiKey = req.headers['authorization']?.slice(7) ?? null
+        const passKey = await AniDatabase.passKey()
+        if (apiKey == null || passKey) return res.sendStatus(401)
+        
         const id = /[0-9]+$/.test(req.body.zoroId) ? parseInt(req.body.zoroId) : null
         const map = req.body?.map
         if (id == null || map == null) res.sendStatus(400)
