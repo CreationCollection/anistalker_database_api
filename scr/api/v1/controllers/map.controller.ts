@@ -11,7 +11,7 @@ export async function getZoroMapping(req: Request, res: Response) {
         if (id == null) res.sendStatus(400)
         else {
             const mapping = await AniRecord.getZoroMapping(id)
-            res.status(200).send(mapping)
+            res.status(200).send({ status: 0, data: mapping })
         }
     })
 }
@@ -23,7 +23,7 @@ export async function getAnilistMapping(req: Request, res: Response) {
         if (id == null) res.sendStatus(400)
         else {
             const mapping = await AniRecord.getAnilistMapping(id)
-            res.status(200).send(mapping)
+            res.status(200).send({ status: 0, data: mapping })
         }
     })
 }

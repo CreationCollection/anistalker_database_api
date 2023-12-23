@@ -12,9 +12,15 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+app.set('trust proxy', 1);
+
 app.get('/', (req, res) => {
     res.send('Congratulations! You have reached the home page!')
 })
+
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
 
 app.use('/mapping', mappingRouter)
 app.use('/user', userRouter)
