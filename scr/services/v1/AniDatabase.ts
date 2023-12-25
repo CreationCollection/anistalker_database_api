@@ -1,6 +1,5 @@
 import { initializeApp, cert, deleteApp, App, ServiceAccount } from "firebase-admin/app";
 import { Database, getDatabase } from "firebase-admin/database";
-import path from "path";
 
 export class AniDatabase {
     private static app: App | null = null
@@ -8,9 +7,13 @@ export class AniDatabase {
     private static apiKey: string | null = null
 
     static init = () => {
+        const sak = process.env.FIREBASE_SAK
+        const databaseUrl = process.env.DATABASE_URL
+        if (!sak) throw new Error('No Service Account Key found as FIREBASE_SAK environment variable')
+        if (!databaseUrl) throw new Error('No Database url found as DATABASE_URL environment variable')
         this.app = initializeApp({
-            credential: cert(path.resolve("scr/serviceAccountKey.json")),
-            databaseURL: "https://redline-anistalker-default-rtdb.asia-southeast1.firebasedatabase.app/"
+            credential: cert(sak),
+            databaseURL: databaseUrl
         })
         this.database = getDatabase(this.app)
     }
