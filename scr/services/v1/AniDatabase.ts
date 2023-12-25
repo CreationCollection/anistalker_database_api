@@ -12,7 +12,7 @@ export class AniDatabase {
         if (!sak) throw new Error('No Service Account Key found as FIREBASE_SAK environment variable')
         if (!databaseUrl) throw new Error('No Database url found as DATABASE_URL environment variable')
         this.app = initializeApp({
-            credential: cert(sak),
+            credential: cert(JSON.parse(sak)),
             databaseURL: databaseUrl
         })
         this.database = getDatabase(this.app)
